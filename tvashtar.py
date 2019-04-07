@@ -27,12 +27,13 @@ class Particle(pg.sprite.Sprite):
 
 # defining a constructor method for the particle object
     def __init__(self, screen, background):
-        super().__init()
+        super().__init__()
         self.screen = screen
         self.background = background
         self.image = pg.Surface((4, 4)) # assigns particle image to Surface object & makes it square with 4 pixel length sides
         self.rect = self.image.get_rect()
-        self.gas = random.choice(list(Particle.gases_colors.keys())) # randomly chooses particle type from the keys in gases_color dictionary
+        # can randomize the gases or choose which one
+        self.gas = 'SO2' #random.choice(list(Particle.gases_colors.keys())) # randomly chooses particle type from the keys in gases_color dictionary
         self.color = Particle.gases_colors[self.gas] # gets correct color of the gas chosen
         self.vel = Particle.VELOCITY_SO2 * Particle.vel_scalar[self.gas] # determines velocity of chosen gas
         self.x, self.y = Particle.VENT_LOCATION_XY
@@ -64,3 +65,35 @@ def main():
     pg.display.set_caption("IO Volcano Simulator")
     background = pg.image.load('tvashtar_plume.gif') # sets the background to an image
     
+    # Set up color coded legend so users know which particles are what color
+    legend_font = pg.font.SysFont('None', 24)
+    water_label = legend_font.render('--- H2O', True, WHITE, BLACK)
+    h2s_label = legend_font.render('--- H2S', True, DK_GRAY, BLACK)
+    co2_label = legend_font.render('--- CO2', True, GRAY, BLACK)
+    so2_label = legend_font.render('--- SO2', True, LT_GRAY, BLACK)
+
+    particles = pg.sprite.Group()
+
+    clock = pg.time.Clock()
+
+    while True:
+        clock.tick(25) # sets frame rates to 25 per second
+        particles.add(Particle(screen, background))
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+        
+        screen.blit(background, (0, 0))
+        screen.blit(water_label, (40, 20))
+        screen.blit(h2s_label, (40, 40))
+        screen.blit(co2_label, (40, 60))
+        screen.blit(so2_label, (40, 80))
+
+        particles.update()
+        particles.draw(screen)
+
+        pg.display.flip()
+
+if __name__ == "__main__":
+    main()
