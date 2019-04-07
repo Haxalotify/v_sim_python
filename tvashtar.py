@@ -6,6 +6,7 @@ import pygame as pg
 pg.init() # initializes pygame
 
 # defining color table
+#BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 LT_GRAY = (180, 180, 180)
@@ -33,7 +34,7 @@ class Particle(pg.sprite.Sprite):
         self.image = pg.Surface((4, 4)) # assigns particle image to Surface object & makes it square with 4 pixel length sides
         self.rect = self.image.get_rect()
         # can randomize the gases or choose which one
-        self.gas = 'SO2' #random.choice(list(Particle.gases_colors.keys())) # randomly chooses particle type from the keys in gases_color dictionary
+        self.gas = 'H2O' #random.choice(list(Particle.gases_colors.keys())) # randomly chooses particle type from the keys in gases_color dictionary
         self.color = Particle.gases_colors[self.gas] # gets correct color of the gas chosen
         self.vel = Particle.VELOCITY_SO2 * Particle.vel_scalar[self.gas] # determines velocity of chosen gas
         self.x, self.y = Particle.VENT_LOCATION_XY
